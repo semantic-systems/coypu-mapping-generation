@@ -1,0 +1,71 @@
+@prefix ex: <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:Cls1 rdf:type owl:Class .
+ex:Cls3 rdf:type owl:Class .
+ex:Cls4 rdf:type owl:Class .
+ex:Cls5 rdf:type rdfs:Class .
+ex:Cls6 rdf:type owl:Class .
+ex:Cls7 rdf:type owl:Class .
+
+#        Cls1
+#       /    \
+#    Cls2     Cls3
+#   /  \      /  \
+# Cls4 Cls5 Cls6 Cls7
+
+# ex:Cls2 not declared as class but should be recognized as class
+ex:Cls2 rdfs:subClassOf ex:Cls1 .
+ex:Cls3 rdfs:subClassOf ex:Cls1 .
+ex:Cls4 rdfs:subClassOf ex:Cls2 .
+ex:Cls5 rdfs:subClassOf ex:Cls2 .
+ex:Cls6 rdfs:subClassOf ex:Cls3 .
+ex:Cls7 rdfs:subClassOf ex:Cls3 .
+
+# Should be recognized as object property
+ex:objProp1 rdf:type owl:FunctionalProperty .
+
+# Should be recognized as object property
+ex:objProp2 rdf:type owl:InverseFunctionalProperty .
+
+# Should be recognized as object property domain declaration
+# even though the property declaration follows later
+ex:objProp3 rdfs:domain ex:Cls1 .
+
+# Should be recognized as object property range declaration
+# even though the property declaration follows later
+ex:objProp3 rdfs:range ex:Cls7 .
+ex:objProp4 rdfs:range ex:Cls2 .
+
+ex:objProp3 rdf:type owl:ObjectProperty .
+ex:objProp4 rdf:type owl:ObjectProperty .
+ex:objProp5 rdf:type owl:ObjectProperty .
+
+ex:objProp5 rdfs:range ex:Cls2 .
+
+ex:objProp6 rdfs:subPropertyOf ex:objProp3 .
+
+ex:objProp7 owl:inverseOf ex:objProp3 .
+ex:objProp8 owl:inverseOf ex:objProp9 .
+
+# Should be recognized as datatype property domain declaration
+# even though the property declaration follows later
+ex:dtypeProp1 rdfs:domain ex:Cls1 .
+ex:dtypeProp2 rdfs:domain ex:Cls1 .
+ex:dtypeProp5 rdfs:domain ex:Cls3 .
+
+# Should be recognized as datatype property range declaration
+# even though the property declaration follows later
+ex:dtypeProp2 rdfs:range xsd:int .
+
+ex:dtypeProp1 rdf:type owl:DatatypeProperty .
+ex:dtypeProp2 rdf:type owl:DatatypeProperty .
+ex:dtypeProp3 rdf:type owl:DatatypeProperty .
+ex:dtypeProp4 rdf:type owl:DatatypeProperty .
+ex:dtypeProp5 rdf:type owl:DatatypeProperty .
+ex:dtypeProp4 rdfs:range xsd:int .
+
+ex:dtypeProp6 rdfs:subPropertyOf ex:dtypeProp2 .
