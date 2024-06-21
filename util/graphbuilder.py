@@ -1,7 +1,8 @@
+from typing import List
+
 from steiner_tree.bank import BankNode, BankGraph, BankEdge
 
 from semanticlabeling.labeledcolumn import LabeledColumn
-from util.file import InputFile
 
 
 class SemanticLabelNode(BankNode):
@@ -9,19 +10,26 @@ class SemanticLabelNode(BankNode):
         super().__init__(identifier)
         self.labeled_column = labeled_column
 
+    def __eq__(self, other):
+        if not isinstance(other, SemanticLabelNode):
+            return False
 
-def build(processed_input_file: InputFile):
+        return self.id == other.id \
+            and self.labeled_column == other.labeled_column
+
+
+def build(labeled_columns: List[LabeledColumn]):
     graph = BankGraph()
 
     # init nodes
-    for column in processed_input_file.columns:
+    for column in labeled_columns:
         column_id = column.column_name  # assuming it's unique --> FIXME
         node = SemanticLabelNode(column_id, column)
         graph.add_node(node)
 
     # init edges
     edge_counter = 0
-    for column in processed_input_file.columns:
+    for column in labeled_columns:
         source_node_id = column.column_name
         for link_name, target_columns in column.links.items():
             # E.g.:
@@ -36,7 +44,6 @@ def build(processed_input_file: InputFile):
                     n_edges=1,
                     weight=1
                 )
-
                 graph.add_edge(edge)
                 edge_counter += 1
 
