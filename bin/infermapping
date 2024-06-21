@@ -4,7 +4,6 @@ import logging
 from typing import List, Type
 
 
-from semanticlabeling.labeledcolumn import YetUnknownTypeColumn
 from semanticlabeling.labelinferencer import SemanticLabelInferencer
 from util.file import InputFile
 from util import graphbuilder, graphvisualizer
@@ -76,7 +75,7 @@ def main(
     input_file = input_file_cls(input_file_path=input_file_path)
 
     label_inferencer = SemanticLabelInferencer(input_file, ontologies)
-    graph = graphbuilder.build_from_label_inferencer(label_inferencer)
+    graph = label_inferencer.get_graph()
 
     if visualize:
         graphvisualizer.visualize(graph)
