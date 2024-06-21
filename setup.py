@@ -10,8 +10,7 @@ setup(
         'tests'
     ],
     scripts=[
-        'bin/infersemlabels',
-        'bin/infersemrelations'
+        'bin/infermapping'
     ],
     url='',
     license='',
