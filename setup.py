@@ -22,5 +22,6 @@ setup(
         'pandas==2.2.0',
         'matplotlib',
         'steiner-tree==1.1.3',
+        'pyvis',
     ]
 )
