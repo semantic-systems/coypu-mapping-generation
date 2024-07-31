@@ -24,6 +24,10 @@ class LabeledColumn(ABC):
     def get_type() -> ColumnType:
         raise NotImplementedError()
 
+    @abstractmethod
+    def __sub__(self, other):
+        raise NotImplementedError()
+
 
 class IDColumn(LabeledColumn):
     def __init__(
@@ -45,6 +49,16 @@ class IDColumn(LabeledColumn):
     def __str__(self):
         return f'IDColumn({self.column_name}, {self.min_id_length} < ' \
                f'[{self.avg_id_length:.4f}] < {self.max_id_length})'
+
+    def __sub__(self, other):
+        if not isinstance(other, IDColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException
+        else:
+            # TODO: re-check
+            return abs(self.min_id_length - other.min_id_length) + \
+                abs(self.avg_id_length - other.avg_id_length) + \
+                abs(self.max_id_length - other.max_id_length)
 
 
 class UntypedIDColumn(LabeledColumn):
@@ -77,6 +91,13 @@ class UntypedIDColumn(LabeledColumn):
     @staticmethod
     def get_type() -> ColumnType:
         return ColumnType.ID
+
+    def __sub__(self, other):
+        # generally it makes no sense to compare even two UntypedIDColumn's as
+        # they are just temporary containers for things that shall go into
+        # something typed
+        from util.columncomparator import UncomparableException
+        raise UncomparableException()
 
 
 class TypedIDColumn(IDColumn):
@@ -131,6 +152,21 @@ class TextColumn(LabeledColumn):
         return f'TextColumn({self.column_name}, {self.min_text_length} < ' \
                f'[{self.avg_text_length:.4f}] < {self.max_text_length})'
 
+    def __sub__(self, other):
+        if not isinstance(other, TextColumn) and not isinstance(other, StringColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException()
+
+        else:
+            if isinstance(other, StringColumn):
+                return abs(self.min_text_length - other.min_str_length) + \
+                    abs(self.avg_text_length - other.avg_str_length) + \
+                    abs(self.max_text_length - other.max_str_length)
+            else:
+                return abs(self.min_text_length - other.min_text_length) + \
+                    abs(self.avg_text_length - other.avg_text_length) + \
+                    abs(self.max_text_length - other.max_text_length)
+
 
 class StringColumn(LabeledColumn):
     def __init__(
@@ -163,18 +199,19 @@ class StringColumn(LabeledColumn):
         return f'StringColumn({self.column_name}, {self.min_str_length} < ' \
                f'[{self.avg_str_length:.4f}] < {self.max_str_length})'
 
+    def __sub__(self, other):
+        if not isinstance(other, StringColumn) and not isinstance(other, TextColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException()
 
-class CategoriesColumn(LabeledColumn):
-    def __init__(self, column_name: str, categories: List[str]):
-        super().__init__(column_name)
-        self.categories = categories
-
-    @staticmethod
-    def get_type() -> ColumnType:
-        return ColumnType.Categories
-
-    def __str__(self):
-        return f'CategoriesColumn({self.column_name}, [{" ".join(self.categories)}])'
+        if isinstance(other, TextColumn):
+            return abs(self.min_str_length - other.min_text_length) + \
+                abs(self.avg_str_length - other.avg_text_length) + \
+                abs(self.max_str_length - other.max_text_length)
+        else:
+            return abs(self.min_str_length - other.min_str_length) + \
+                abs(self.avg_str_length - other.avg_str_length) + \
+                abs(self.max_str_length - other.max_str_length)
 
 
 class BooleanColumn(LabeledColumn):
@@ -190,6 +227,37 @@ class BooleanColumn(LabeledColumn):
     def __str__(self):
         return f'BooleanColumn({self.column_name}, {self.portion_true} True, ' \
                f'{self.portion_false} False)'
+
+    def __sub__(self, other):
+        if not isinstance(other, BooleanColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException()
+
+        else:
+            return abs(self.portion_true - other.portion_true) + \
+                abs(self.portion_false - other.portion_false)
+
+
+class CategoriesColumn(LabeledColumn):
+    def __init__(self, column_name: str, categories: List[str]):
+        super().__init__(column_name)
+        self.categories = categories
+
+    @staticmethod
+    def get_type() -> ColumnType:
+        return ColumnType.Categories
+
+    def __str__(self):
+        return f'CategoriesColumn({self.column_name}, [{" ".join(self.categories)}])'
+
+    def __sub__(self, other):
+        if not isinstance(other, CategoriesColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException
+
+        else:
+            return 1 - len(set(self.categories).intersection(set(other.categories))) / \
+                len(set(self.categories).union(set(other.categories)))
 
 
 class IntegerColumn(LabeledColumn):
@@ -215,6 +283,17 @@ class IntegerColumn(LabeledColumn):
         return f'IntegerColumn({self.column_name}, {self.min_value} < ' \
                f'[{self.avg_value:.4f} +/- {self.value_stddev:.4f}] < {self.max_value})'
 
+    def __sub__(self, other):
+        if not isinstance(other, IntegerColumn) and not isinstance(other, FloatColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException()
+
+        else:
+            return abs(self.min_value - other.min_value) + \
+                abs(self.avg_value - other.avg_value) + \
+                abs(self.max_value - other.max_value) + \
+                abs(self.value_stddev - other.value_stddev)
+
 
 class FloatColumn(LabeledColumn):
     def __init__(
@@ -239,6 +318,16 @@ class FloatColumn(LabeledColumn):
     def __str__(self):
         return f'FloatColumn({self.column_name}, {self.min_value:.4f} < ' \
                f'[{self.avg_value:.4f} +/- {self.value_stddev:.4f}] < {self.max_value:.4f})'
+
+    def __sub__(self, other):
+        if not isinstance(other, FloatColumn) and not isinstance(other, IntegerColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException()
+        else:
+            return abs(self.min_value - other.min_value) + \
+                abs(self.avg_value - other.avg_value) + \
+                abs(self.max_value - other.max_value) + \
+                abs(self.value_stddev - other.value_stddev)
 
 
 class WGS84CoordinateColumn(FloatColumn):
@@ -294,6 +383,16 @@ class DateTimeColumn(LabeledColumn):
         return f'DateTimeColumn({self.column_name}, {self.min_date_time} < ' \
                f'[{self.mean_date_time}] < {self.max_date_time})'
 
+    def __sub__(self, other):
+        if not isinstance(other, DateTimeColumn):
+            from util.columncomparator import UncomparableException
+            raise UncomparableException()
+
+        else:
+            return abs(self.min_date_time.timestamp() - other.min_date_time.timestamp()) + \
+                abs(self.mean_date_time.timestamp() - other.mean_date_time.timestamp()) + \
+                abs(self.max_date_time.timestamp() - other.max_date_time.timestamp())
+
 
 class YetUnknownTypeColumn(LabeledColumn):
     def __init__(self, column_name: str):
@@ -306,3 +405,8 @@ class YetUnknownTypeColumn(LabeledColumn):
     @staticmethod
     def get_type() -> ColumnType:
         return ColumnType.Unknown
+
+    def __sub__(self, other):
+        # comparing unknown type columns to anything does not make sense
+        from util.columncomparator import UncomparableException
+        raise UncomparableException()
