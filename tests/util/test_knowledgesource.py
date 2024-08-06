@@ -1,136 +1,159 @@
+import pytest
 from rdflib import URIRef
 
 from util.knowledgesource import KnowledgeSource
 
 
-def test_ontology_processing():
-    ontology_file_path = 'tests/util/test_ontology.ttl'
-    ex = 'http://example.org/'
-    xsd = 'http://www.w3.org/2001/XMLSchema#'
+EX = 'http://example.org/'
+XSD = 'http://www.w3.org/2001/XMLSchema#'
+XSD_INT = URIRef(XSD + 'int')
+CLS1 = URIRef(EX + 'Cls1')
+CLS2 = URIRef(EX + 'Cls2')
+CLS3 = URIRef(EX + 'Cls3')
+CLS4 = URIRef(EX + 'Cls4')
+CLS5 = URIRef(EX + 'Cls5')
+CLS6 = URIRef(EX + 'Cls6')
+CLS7 = URIRef(EX + 'Cls7')
 
-    xsd_int = URIRef(xsd + 'int')
+OBJ_PROP1 = URIRef(EX + 'objProp1')
+OBJ_PROP2 = URIRef(EX + 'objProp2')
+OBJ_PROP3 = URIRef(EX + 'objProp3')
+OBJ_PROP4 = URIRef(EX + 'objProp4')
+OBJ_PROP5 = URIRef(EX + 'objProp5')
+OBJ_PROP6 = URIRef(EX + 'objProp6')
+OBJ_PROP7 = URIRef(EX + 'objProp7')
+OBJ_PROP8 = URIRef(EX + 'objProp8')
+OBJ_PROP9 = URIRef(EX + 'objProp9')
 
-    cls1 = URIRef(ex + 'Cls1')
-    cls2 = URIRef(ex + 'Cls2')
-    cls3 = URIRef(ex + 'Cls3')
-    cls4 = URIRef(ex + 'Cls4')
-    cls5 = URIRef(ex + 'Cls5')
-    cls6 = URIRef(ex + 'Cls6')
-    cls7 = URIRef(ex + 'Cls7')
+DTYPE_PROP1 = URIRef(EX + 'dtypeProp1')
+DTYPE_PROP2 = URIRef(EX + 'dtypeProp2')
+DTYPE_PROP3 = URIRef(EX + 'dtypeProp3')
+DTYPE_PROP4 = URIRef(EX + 'dtypeProp4')
+DTYPE_PROP5 = URIRef(EX + 'dtypeProp5')
+DTYPE_PROP6 = URIRef(EX + 'dtypeProp6')
 
-    obj_prop1 = URIRef(ex + 'objProp1')
-    obj_prop2 = URIRef(ex + 'objProp2')
-    obj_prop3 = URIRef(ex + 'objProp3')
-    obj_prop4 = URIRef(ex + 'objProp4')
-    obj_prop5 = URIRef(ex + 'objProp5')
-    obj_prop6 = URIRef(ex + 'objProp6')
-    obj_prop7 = URIRef(ex + 'objProp7')
-    obj_prop8 = URIRef(ex + 'objProp8')
-    obj_prop9 = URIRef(ex + 'objProp9')
 
-    dtype_prop1 = URIRef(ex + 'dtypeProp1')
-    dtype_prop2 = URIRef(ex + 'dtypeProp2')
-    dtype_prop3 = URIRef(ex + 'dtypeProp3')
-    dtype_prop4 = URIRef(ex + 'dtypeProp4')
-    dtype_prop5 = URIRef(ex + 'dtypeProp5')
-    dtype_prop6 = URIRef(ex + 'dtypeProp6')
+@pytest.fixture
+def knowledge_source():
+    knowledge_source_file_path = 'tests/util/test_ontology.ttl'
+    ks = KnowledgeSource(knowledge_source_file_path=knowledge_source_file_path)
 
-    ontology = KnowledgeSource(knowledge_source_file_path=ontology_file_path)
-    # FIXME
-    # assert ontology.classes == {cls1, cls2, cls3, cls4, cls5, cls6, cls7}
+    return ks
 
-    assert ontology.subclasses == {
-        cls1: {cls2, cls3, cls4, cls5, cls6, cls7},
-        cls2: {cls4, cls5},
-        cls3: {cls6, cls7},
-        cls4: set(),
-        cls5: set(),
-        cls6: set(),
-        cls7: set()
+
+def test_class_processing(knowledge_source):
+    assert knowledge_source.classes == {CLS1, CLS2, CLS3, CLS4, CLS5, CLS6, CLS7}
+
+
+def test_subclass_processing(knowledge_source):
+    assert knowledge_source.subclasses == {
+        CLS1: {CLS2, CLS3, CLS4, CLS5, CLS6, CLS7},
+        CLS2: {CLS4, CLS5},
+        CLS3: {CLS6, CLS7},
+        CLS4: set(),
+        CLS5: set(),
+        CLS6: set(),
+        CLS7: set()
     }
 
-    assert ontology.superclasses == {
-        cls1: set(),
-        cls2: {cls1},
-        cls3: {cls1},
-        cls4: {cls2, cls1},
-        cls5: {cls2, cls1},
-        cls6: {cls3, cls1},
-        cls7: {cls3, cls1}
+
+def test_superclass_processing(knowledge_source):
+    assert knowledge_source.superclasses == {
+        CLS1: set(),
+        CLS2: {CLS1},
+        CLS3: {CLS1},
+        CLS4: {CLS2, CLS1},
+        CLS5: {CLS2, CLS1},
+        CLS6: {CLS3, CLS1},
+        CLS7: {CLS3, CLS1}
     }
 
-    # FIXME
-    # assert ontology.object_properties == \
-    #        {
-    #            obj_prop1,
-    #            obj_prop2,
-    #            obj_prop3,
-    #            obj_prop4,
-    #            obj_prop5,
-    #            obj_prop6,
-    #            obj_prop7,
-    #            obj_prop8,
-    #            obj_prop9
-    #        }
 
-    assert ontology.datatype_properties == \
-           {
-               dtype_prop1,
-               dtype_prop2,
-               dtype_prop3,
-               dtype_prop4,
-               dtype_prop5,
-               dtype_prop6
-           }
-
-    assert ontology.range_to_datatype_property == \
-           {xsd_int: {dtype_prop2, dtype_prop4, dtype_prop6}}
-
-    assert ontology.datatype_property_ranges == \
-           {
-               dtype_prop2: {xsd_int},
-               dtype_prop4: {xsd_int},
-               dtype_prop6: {xsd_int}
-           }
-
-    assert ontology.domain_to_datatype_property == \
-           {cls1: {dtype_prop1, dtype_prop2, dtype_prop6}, cls3: {dtype_prop5}}
-
-    assert ontology.datatype_property_domains == \
-           {
-               dtype_prop1: {cls1},
-               dtype_prop2: {cls1},
-               dtype_prop5: {cls3},
-               dtype_prop6: {cls1}
-           }
-
-    assert ontology.range_to_object_property == {
-        cls2: {obj_prop4, obj_prop5},
-        cls7: {obj_prop3, obj_prop6},
-        cls1: {obj_prop7}
+def test_object_property_processing(knowledge_source):
+    assert knowledge_source.object_properties == {
+        OBJ_PROP1,
+        OBJ_PROP2,
+        OBJ_PROP3,
+        OBJ_PROP4,
+        OBJ_PROP5,
+        OBJ_PROP6,
+        OBJ_PROP7,
+        OBJ_PROP8,
+        OBJ_PROP9
     }
 
-    assert ontology.object_property_ranges == \
-           {
-               obj_prop4: {cls2},
-               obj_prop5: {cls2},
-               obj_prop3: {cls7},
-               obj_prop6: {cls7},
-               obj_prop7: {cls1}
-           }
 
-    assert ontology.domain_to_object_property == \
-           {cls1: {obj_prop3, obj_prop6}, cls7: {obj_prop7}}
+def test_datatype_property_processing(knowledge_source):
+    assert knowledge_source.datatype_properties == {
+        DTYPE_PROP1,
+        DTYPE_PROP2,
+        DTYPE_PROP3,
+        DTYPE_PROP4,
+        DTYPE_PROP5,
+        DTYPE_PROP6
+    }
 
-    assert ontology.object_property_domains == \
-           {obj_prop3: {cls1}, obj_prop6: {cls1}, obj_prop7: {cls7}}
 
-    assert ontology.unknown_property_domains == dict()
-    assert ontology.unknown_property_ranges == dict()
-    # FIXME
-    # assert ontology.functional_properties == {obj_prop1}
-    # FIXME
-    assert ontology.inverse_functional_properties == {obj_prop2}
+def test_datatype_property_range_processing(knowledge_source):
+    assert knowledge_source.range_to_datatype_property == \
+           {XSD_INT: {DTYPE_PROP2, DTYPE_PROP4, DTYPE_PROP6}}
 
-    assert ontology.subproperties == \
-           {obj_prop3: {obj_prop6}, dtype_prop2: {dtype_prop6}}
+    assert knowledge_source.datatype_property_ranges == {
+        DTYPE_PROP2: {XSD_INT},
+        DTYPE_PROP4: {XSD_INT},
+        DTYPE_PROP6: {XSD_INT}
+    }
+
+
+def test_datatype_property_domain_processing(knowledge_source):
+    assert knowledge_source.domain_to_datatype_property == \
+           {CLS1: {DTYPE_PROP1, DTYPE_PROP2, DTYPE_PROP6}, CLS3: {DTYPE_PROP5}}
+
+    assert knowledge_source.datatype_property_domains == {
+        DTYPE_PROP1: {CLS1},
+        DTYPE_PROP2: {CLS1},
+        DTYPE_PROP5: {CLS3},
+        DTYPE_PROP6: {CLS1}
+    }
+
+
+def test_object_property_range_processing(knowledge_source):
+    assert knowledge_source.range_to_object_property == {
+        CLS2: {OBJ_PROP4, OBJ_PROP5},
+        CLS7: {OBJ_PROP3, OBJ_PROP6},
+        CLS1: {OBJ_PROP7}
+    }
+
+    assert knowledge_source.object_property_ranges == {
+        OBJ_PROP4: {CLS2},
+        OBJ_PROP5: {CLS2},
+        OBJ_PROP3: {CLS7},
+        OBJ_PROP6: {CLS7},
+        OBJ_PROP7: {CLS1}
+    }
+
+
+def test_object_property_domain_processing(knowledge_source):
+    assert knowledge_source.domain_to_object_property == \
+           {CLS1: {OBJ_PROP3, OBJ_PROP6}, CLS7: {OBJ_PROP7}}
+
+    assert knowledge_source.object_property_domains == \
+           {OBJ_PROP3: {CLS1}, OBJ_PROP6: {CLS1}, OBJ_PROP7: {CLS7}}
+
+
+def test_unknown_property_domains(knowledge_source):
+    assert knowledge_source.unknown_property_domains == dict()
+    assert knowledge_source.unknown_property_ranges == dict()
+
+
+def test_functional_property_processing(knowledge_source):
+    assert knowledge_source.functional_properties == {OBJ_PROP1}
+
+
+def test_inverse_functional_property_processing(knowledge_source):
+    assert knowledge_source.inverse_functional_properties == {OBJ_PROP2}
+
+
+def test_subproperty_processing(knowledge_source):
+    assert knowledge_source.subproperties == \
+           {OBJ_PROP3: {OBJ_PROP6}, DTYPE_PROP2: {DTYPE_PROP6}}
