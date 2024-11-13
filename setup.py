@@ -23,5 +23,6 @@ setup(
         'matplotlib',
         'steiner-tree==1.1.3',
         'pyvis',
+        'diskcache',
     ]
 )
