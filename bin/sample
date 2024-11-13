@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+
+import argparse
+import logging
+from typing import Set, Dict
+
+from rdflib import Graph, IdentifiedNode, URIRef, BNode
+
+
+logger = logging.getLogger(__name__)
+
+
+def get_types(resource: IdentifiedNode, graph: Graph) -> Set[URIRef]:
+    query_str = f"""
+SELECT DISTINCT ?type
+WHERE {{
+    <{resource}> a ?type  
+}}"""
+
+    result = graph.query(query_str)
+    types = set()
+
+    for row in result:
+        types.add(row.type)
+
+    return types
+
+
+NAME_TO_IRI = dict()
+
+
+def get_type_name(type_iri: URIRef) -> str:
+    local_part = str(type_iri).split('/')[-1].split('#')[-1]
+    tmp = local_part[:]
+    cntr = 0
+    while tmp in NAME_TO_IRI.keys():
+        cntr += 1
+        tmp = local_part + str(cntr)
+
+    type_name = tmp
+    NAME_TO_IRI[type_name] = type_iri
+
+    return type_name
+
+
+def main(input_file_path: str):
+
+    type_graphs: Dict[URIRef, Graph] = dict()
+    g = Graph()
+
+    g.parse(input_file_path)
+    logger.info(f'Parsed graph with {len(g)} triples')
+
+    cntr = 0
+    for s, p, o in g:
+        cntr += 1
+
+        if cntr % 100000 == 0:
+            logger.info(f'{cntr} triples processed')
+
+        if isinstance(s, BNode):
+            continue
+
+        assert isinstance(s, URIRef)
+
+        types = get_types(s, g)
+        for type_ in types:
+            if type_graphs.get(type_) is None:
+                type_graphs[type_] = Graph()
+
+            type_graphs[type_].add((s, p, o))
+
+    del g
+
+    logger.info(list(type_graphs.keys()))
+    for type_iri, graph in type_graphs.items():
+        logger.info(f'Serializing graph for {type_iri} (size: {len(graph)})')
+        file_name = get_type_name(type_iri) + '.ttl'
+
+        graph.serialize(file_name, 'turtle')
+
+
+if __name__ == '__main__':
+    arg_parser = argparse.ArgumentParser()
+
+    arg_parser.add_argument('input_file')
+    args = arg_parser.parse_args()
+
+    input_file = args.input_file
+
+    main(input_file)

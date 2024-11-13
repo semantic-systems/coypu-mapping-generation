@@ -10,7 +10,8 @@ setup(
         'tests'
     ],
     scripts=[
-        'bin/infermapping'
+        'bin/infermapping',
+        'bin/sample'
     ],
     url='',
     license='',
