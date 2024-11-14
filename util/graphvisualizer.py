@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from pyvis.network import Network
@@ -7,6 +8,9 @@ from util.graphbuilder import SemanticLabelNode
 from semanticlabeling.labeledcolumn import IDColumn, TextColumn, \
     CategoriesColumn, FloatColumn, WGS84LatitudeColumn, WGS84LongitudeColumn, \
     DateTimeColumn
+
+
+logger = logging.getLogger(__name__)
 
 # color mapping for different column types
 # semantically similar columns have similar colors
@@ -97,7 +101,7 @@ def construct_node_title(node: SemanticLabelNode) -> str:
                 f'Avg Length: {labeled_column.avg_id_length}\n' \
                 f'Max Length: {labeled_column.max_id_length}'
 
-        case "TextColumn":
+        case 'TextColumn':
             assert isinstance(labeled_column, TextColumn)
             title = \
                 f'{column_name} (Text)\n' \
@@ -172,7 +176,9 @@ def visualize(graph: BankGraph, save_path: str = 'graph.html') -> None:
         assert isinstance(node, SemanticLabelNode)
 
     nodes: List[SemanticLabelNode] = graph.nodes()
+    logger.info(f'Graph has {len(nodes)} nodes')
     edges = graph.edges()
+    logger.info(f'Graph has {len(edges)} edges')
 
     # create the nodes
     for node in nodes:
@@ -235,7 +241,8 @@ def visualize(graph: BankGraph, save_path: str = 'graph.html') -> None:
         "barnesHut": {
           "damping": 0.22
         },
-        "minVelocity": 0.75
+        "minVelocity": 0.1,
+        "maxVelocity": 0.2
       }
     }''')
 
