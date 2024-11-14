@@ -96,7 +96,7 @@ def transform_series(series: pd.Series, series_name: str) -> LabeledColumn:
                     pass
 
             try:
-                float_series = series.map(lambda s: float(s))
+                float_series = series.map(lambda s: float(str(s)), na_action='ignore')
 
                 return init_float_column(
                     column_name=series_name,
@@ -108,7 +108,7 @@ def transform_series(series: pd.Series, series_name: str) -> LabeledColumn:
 
             # Check the string lengths and how much they deviate. If the length
             # does not differ much we assume some kind of ID --> can be 'URI-fied'
-            str_lengths: pd.Series = series.map(lambda s: len(s), na_action='ignore')
+            str_lengths: pd.Series = series.map(lambda s: len(str(s)), na_action='ignore')
 
             if str_lengths.std() < 0.5:  # FIXME: value chosen arbitrarily
                 # we assume some kind of ID
@@ -187,10 +187,10 @@ def init_str_column(column_name: str, values: pd.Series) -> LabeledColumn:
             categories=values.unique().tolist()
         )
 
-    str_lengths = values.map(lambda t: len(t), na_action='ignore')
+    str_lengths = values.map(lambda t: len(str(t)), na_action='ignore')
 
     # Check if there is any whitespace in the string values
-    if values.map(lambda s: ' ' in s.strip(), na_action='ignore').any():
+    if values.map(lambda s: ' ' in str(s).strip(), na_action='ignore').any():
 
         return TextColumn(
             column_name=column_name,
