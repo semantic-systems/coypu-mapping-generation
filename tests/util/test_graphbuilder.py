@@ -240,3 +240,6 @@ def test_build_graph_from_labeled_columns():
 
     assert graph_to_test.nodes() == graph.nodes()
     assert graph_to_test.edges() == graph.edges()
+
+    # from util import graphvisualizer
+    # graphvisualizer.visualize(graph)
