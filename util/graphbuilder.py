@@ -23,13 +23,17 @@ def build(labeled_columns: List[LabeledColumn]):
 
     # init nodes
     for column in labeled_columns:
-        column_id = column.column_name  # assuming it's unique --> FIXME
-        node = SemanticLabelNode(column_id, column)
-        graph.add_node(node)
+        if column is not None:
+            column_id = column.column_name  # assuming it's unique --> FIXME
+            node = SemanticLabelNode(column_id, column)
+            graph.add_node(node)
 
     # init edges
     edge_counter = 0
     for column in labeled_columns:
+        if column is None:
+            continue
+
         source_node_id = column.column_name
         for link_name, target_columns in column.links.items():
             # E.g.:
