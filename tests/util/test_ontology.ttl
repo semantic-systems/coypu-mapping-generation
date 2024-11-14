@@ -26,7 +26,9 @@ ex:Cls6 rdfs:subClassOf ex:Cls3 .
 ex:Cls7 rdfs:subClassOf ex:Cls3 .
 
 # Should be recognized as object property
-ex:objProp1 rdf:type owl:FunctionalProperty .
+ex:objProp1 rdf:type
+        owl:ObjectProperty ,
+        owl:FunctionalProperty .
 
 # Should be recognized as object property
 ex:objProp2 rdf:type owl:InverseFunctionalProperty .

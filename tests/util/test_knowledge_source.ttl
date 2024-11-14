@@ -1,0 +1,121 @@
+@prefix ex: <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+
+ex:Person rdf:type owl:Class .
+
+ex:BassGuitar rdf:type owl:Class .
+
+ex:PickupSetting rdf:type owl:Class .
+
+ex:fisherman rdf:type ex:PickupSetting .
+ex:j rdf:type ex:PickupSetting .
+ex:jp rdf:type ex:PickupSetting .
+ex:p rdf:type ex:PickupSetting .
+ex:hh rdf:type ex:PickupSetting .
+ex:lipstick_sc rdf:type ex:PickupSetting .
+
+ex:hasName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:domain ex:Person .
+
+ex:adam 
+    rdf:type ex:Person ;
+    ex:hasName "Adam" ;
+    foaf:knows ex:chris ;
+    ex:plays ex:ibanez_sr_133_pm .
+
+ex:beth
+    rdf:type ex:Person ;
+    ex:hasName "Beth" ;
+    ex:plays ex:fender_am_perf_p_bass .
+
+ex:chris
+    rdf:type ex:Person ;
+    ex:hasName "Christopher" ;
+    ex:plays ex:fender_player_jazz_bass .
+
+ex:dana
+    rdf:type ex:Person ;
+    ex:hasName "Dana" ;
+    foaf:knows ex:eric ;
+    ex:plays ex:fender_kingman .
+
+ex:eric
+    rdf:type ex:Person ;
+    ex:hasName "Eric" ;
+    ex:plays ex:squier_precision_bass .
+
+ex:fiona
+    rdf:type ex:Person ;
+    ex:hasName "Fiona" ;
+    ex:plays ex:esp_surveyor_87 .
+
+ex:gerald
+    rdf:type ex:Person ;
+    ex:hasName "Gerald" ;
+    ex:plays ex:gibson_sg_bass .
+
+ex:halle
+    rdf:type ex:Person ;
+    ex:hasName "Halle" ;
+    foaf:knows ex:chris ;
+    ex:plays ex:johnson_precision_bass .
+
+ex:ivan
+    rdf:type ex:Person ;
+    ex:hasName "Ivan" ;
+    ex:plays ex:gibson_ripper_l9 .
+
+ex:jane
+    rdf:type ex:Person ;
+    ex:hasName "Jane" ;
+    ex:plays ex:danelectro_dc_longscale_bass .
+
+ex:kurt
+    rdf:type ex:Person ;
+    ex:hasName "Kurt" .
+
+ex:ibanez_sr_133_pm
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:jp .
+
+ex:fender_am_perf_p_bass 
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:jp .
+
+ex:fender_player_jazz_bass
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:j .
+
+ex:fender_kingman
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:fisherman .
+
+ex:squier_precision_bass
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:p .
+
+ex:esp_surveyor_87
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:jp .
+
+ex:gibson_sg_bass
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:hh .
+
+ex:johnson_precision_bass
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:p .
+
+ex:gibson_ripper_l9-s
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:hh .
+
+ex:danelectro_dc_longscale_bass
+    rdf:type ex:BassGuitar ;
+    ex:hasPickupSetting ex:lipstick_sc .
