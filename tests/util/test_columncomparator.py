@@ -2,7 +2,7 @@ from pandas import Timestamp
 
 from pytest import approx
 
-from util.columncomparator import UncomparableException
+from util.columncomparator import IncomparableLabeledColumnException
 from semanticlabeling.labeledcolumn import BooleanColumn, CategoriesColumn, \
     DateTimeColumn, FloatColumn, IDColumn, IntegerColumn, StringColumn, \
     TextColumn, TypedIDColumn, UntypedIDColumn, WGS84CoordinateColumn, \
@@ -27,7 +27,7 @@ def test_compare_id_id():
     try:
         diff = id_column_01 - id_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == 3 + 4 + 0
@@ -46,7 +46,7 @@ def test_compare_id_untyped_id():
     try:
         id_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -68,7 +68,7 @@ def test_compare_id_typed_id():
     try:
         res = id_column - typed_id_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert res == 1 + 1 + 1
@@ -92,7 +92,7 @@ def test_compare_id_text():
     try:
         id_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -114,7 +114,7 @@ def test_compare_id_string():
     try:
         id_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -134,7 +134,7 @@ def test_compare_id_category():
     try:
         id_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -155,7 +155,7 @@ def test_compare_id_bool():
     try:
         id_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -178,7 +178,7 @@ def test_compare_id_int():
     try:
         id_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -201,7 +201,7 @@ def test_compare_id_float():
     try:
         id_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -224,7 +224,7 @@ def test_compare_id_wgs84_coordinate():
     try:
         id_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -247,7 +247,7 @@ def test_compare_id_wgs84_lat():
     try:
         id_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -270,7 +270,7 @@ def test_compare_id_wgs84_lon():
     try:
         id_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -292,7 +292,7 @@ def test_compare_id_datetime():
     try:
         id_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -309,7 +309,7 @@ def test_compare_id_unknown():
     try:
         id_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -326,7 +326,7 @@ def test_compare_untyped_id_id():
     try:
         untyped_id_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -337,7 +337,7 @@ def test_compare_untyped_id_untyped_id():
     try:
         untyped_id_column_01 - untyped_id_column_02
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -354,7 +354,7 @@ def test_compare_untyped_id_typed_id():
     try:
         untyped_id_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -371,7 +371,7 @@ def test_compare_untyped_id_text():
     try:
         untyped_id_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -388,7 +388,7 @@ def test_compare_untyped_id_string():
     try:
         untyped_id_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -403,7 +403,7 @@ def test_compare_untyped_id_category():
     try:
         untyped_id_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -419,7 +419,7 @@ def test_compare_untyped_id_bool():
     try:
         untyped_id_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -437,7 +437,7 @@ def test_compare_untyped_id_int():
     try:
         untyped_id_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -455,7 +455,7 @@ def test_compare_untyped_id_float():
     try:
         untyped_id_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -473,7 +473,7 @@ def test_compare_untyped_id_wgs84_coordinate():
     try:
         untyped_id_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -491,7 +491,7 @@ def test_compare_untyped_id_wgs84_lat():
     try:
         untyped_id_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -509,7 +509,7 @@ def test_compare_untyped_id_wgs84_lon():
     try:
         untyped_id_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -526,7 +526,7 @@ def test_compare_untyped_id_datetime():
     try:
         untyped_id_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -537,7 +537,7 @@ def test_compare_untyped_id_unknown():
     try:
         untyped_id_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -559,7 +559,7 @@ def test_compare_typed_id_id():
     try:
         diff = typed_id_column - id_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == 1 + 1 + 1
@@ -578,7 +578,7 @@ def test_compare_typed_id_untyped_id():
     try:
         typed_id_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -600,7 +600,7 @@ def test_compare_typed_id_typed_id():
     try:
         diff = typed_id_column_01 - typed_id_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == 1 + 1 + 2
@@ -624,7 +624,7 @@ def test_compare_typed_id_text():
     try:
         typed_id_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -646,7 +646,7 @@ def test_compare_typed_id_string():
     try:
         typed_id_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -666,7 +666,7 @@ def test_compare_typed_id_category():
     try:
         typed_id_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -687,7 +687,7 @@ def test_compare_typed_id_bool():
     try:
         typed_id_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -710,7 +710,7 @@ def test_compare_typed_id_int():
     try:
         typed_id_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -733,7 +733,7 @@ def test_compare_typed_id_float():
     try:
         typed_id_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -756,7 +756,7 @@ def test_compare_typed_id_wgs84_coordinate():
     try:
         typed_id_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -779,7 +779,7 @@ def test_compare_typed_id_wgs84_lat():
     try:
         typed_id_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -802,7 +802,7 @@ def test_compare_typed_id_wgs84_lon():
     try:
         typed_id_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -824,7 +824,7 @@ def test_compare_typed_id_datetime():
     try:
         typed_id_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -841,7 +841,7 @@ def test_compare_typed_id_unknown():
     try:
         typed_id_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -863,7 +863,7 @@ def test_compare_text_id():
     try:
         text_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -880,7 +880,7 @@ def test_compare_text_untyped_id():
     try:
         text_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -902,7 +902,7 @@ def test_compare_text_typed_id():
     try:
         text_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -924,7 +924,7 @@ def test_compare_text_text():
     try:
         diff = text_column_01 - text_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 1.1 + 2)
@@ -948,7 +948,7 @@ def test_compare_text_string():
     try:
         diff = text_column - str_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(8 + 26.2 + 86)
@@ -970,7 +970,7 @@ def test_compare_text_category():
     try:
         text_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -991,7 +991,7 @@ def test_compare_text_bool():
     try:
         text_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1014,7 +1014,7 @@ def test_compare_text_int():
     try:
         text_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1037,7 +1037,7 @@ def test_compare_text_float():
     try:
         text_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1060,7 +1060,7 @@ def test_compare_text_wgs84_coordinate():
     try:
         text_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1083,7 +1083,7 @@ def test_compare_text_wgs84_lat():
     try:
         text_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1106,7 +1106,7 @@ def test_compare_text_wgs84_lon():
     try:
         text_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1128,7 +1128,7 @@ def test_compare_text_datetime():
     try:
         text_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1145,7 +1145,7 @@ def test_compare_text_unknown():
     try:
         text_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1167,7 +1167,7 @@ def test_compare_string_id():
     try:
         str_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1184,7 +1184,7 @@ def test_compare_string_untyped_id():
     try:
         str_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1206,7 +1206,7 @@ def test_compare_string_typed_id():
     try:
         str_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1228,7 +1228,7 @@ def test_compare_string_text():
     try:
         diff = str_column - text_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(8 + 26.2 + 86)
@@ -1252,7 +1252,7 @@ def test_compare_string_string():
     try:
         diff = str_column_01 - str_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 1.1 + 2)
@@ -1274,7 +1274,7 @@ def test_compare_string_category():
     try:
         str_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1295,7 +1295,7 @@ def test_compare_string_bool():
     try:
         str_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1318,7 +1318,7 @@ def test_compare_string_int():
     try:
         str_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1341,7 +1341,7 @@ def test_compare_string_float():
     try:
         str_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1364,7 +1364,7 @@ def test_compare_string_wgs84_coordinate():
     try:
         str_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1387,7 +1387,7 @@ def test_compare_string_wgs84_lat():
     try:
         str_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1410,7 +1410,7 @@ def test_compare_string_wgs84_lon():
     try:
         str_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1432,7 +1432,7 @@ def test_compare_string_datetime():
     try:
         str_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1449,7 +1449,7 @@ def test_compare_string_unknown():
     try:
         str_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1469,7 +1469,7 @@ def test_compare_category_id():
     try:
         categories_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1484,7 +1484,7 @@ def test_compare_category_untyped_id():
     try:
         categories_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1504,7 +1504,7 @@ def test_compare_category_typed_id():
     try:
         categories_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1524,7 +1524,7 @@ def test_compare_category_text():
     try:
         categories_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1544,7 +1544,7 @@ def test_compare_category_string():
     try:
         categories_column - str_column_02
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1573,7 +1573,7 @@ def test_compare_category_category():
         # identical sets of categories --> diff == 0
         diff = categories_column_01 - categories_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(0)
@@ -1582,7 +1582,7 @@ def test_compare_category_category():
         # category overlap of 1 --> diff == 1 - (1/5)
         diff = categories_column_01 - categories_column_03
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1-(1/5))
@@ -1591,7 +1591,7 @@ def test_compare_category_category():
         # disjoint sets of categories --> diff == 1
         diff = categories_column_01 - categories_column_04
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1)
@@ -1612,7 +1612,7 @@ def test_compare_category_bool():
     try:
         categories_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1633,7 +1633,7 @@ def test_compare_category_int():
     try:
         categories_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1654,7 +1654,7 @@ def test_compare_category_float():
     try:
         categories_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1675,7 +1675,7 @@ def test_compare_category_wgs84_coordinate():
     try:
         categories_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1696,7 +1696,7 @@ def test_compare_category_wgs84_lat():
     try:
         categories_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1717,7 +1717,7 @@ def test_compare_category_wgs84_lon():
     try:
         categories_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1737,7 +1737,7 @@ def test_compare_category_datetime():
     try:
         categories_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1752,7 +1752,7 @@ def test_compare_category_unknown():
     try:
         categories_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1773,7 +1773,7 @@ def test_compare_bool_id():
     try:
         bool_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1789,7 +1789,7 @@ def test_compare_bool_untyped_id():
     try:
         bool_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1810,7 +1810,7 @@ def test_compare_bool_typed_id():
     try:
         bool_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1831,7 +1831,7 @@ def test_compare_bool_text():
     try:
         bool_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1852,7 +1852,7 @@ def test_compare_bool_string():
     try:
         bool_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1871,7 +1871,7 @@ def test_compare_bool_category():
     try:
         bool_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1891,7 +1891,7 @@ def test_compare_bool_bool():
     try:
         diff = bool_column_01 - bool_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(0.3 + 0.3)
@@ -1915,7 +1915,7 @@ def test_compare_bool_int():
     try:
         bool_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1937,7 +1937,7 @@ def test_compare_bool_float():
     try:
         bool_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1959,7 +1959,7 @@ def test_compare_bool_wgs84_coordinate():
     try:
         bool_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -1981,7 +1981,7 @@ def test_compare_bool_wgs84_lat():
     try:
         bool_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2003,7 +2003,7 @@ def test_compare_bool_wgs84_lon():
     try:
         bool_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2024,7 +2024,7 @@ def test_compare_bool_datetime():
     try:
         bool_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2040,7 +2040,7 @@ def test_compare_bool_unknown():
     try:
         bool_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2063,7 +2063,7 @@ def test_compare_int_id():
     try:
         int_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2081,7 +2081,7 @@ def test_compare_int_untyped_id():
     try:
         int_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2104,7 +2104,7 @@ def test_compare_int_typed_id():
     try:
         int_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2127,7 +2127,7 @@ def test_compare_int_text():
     try:
         int_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2150,7 +2150,7 @@ def test_compare_int_string():
     try:
         int_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2171,7 +2171,7 @@ def test_compare_int_category():
     try:
         int_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2193,7 +2193,7 @@ def test_compare_int_bool():
     try:
         int_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2217,7 +2217,7 @@ def test_compare_int_int():
     try:
         diff = int_column_01 - int_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(2 + 1.1 + 1 + 0.4)
@@ -2243,7 +2243,7 @@ def test_compare_int_float():
     try:
         diff = int_column - float_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -2269,7 +2269,7 @@ def test_compare_int_wgs84_coordinate():
     try:
         diff = int_column - wgs84_coordinate_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -2295,7 +2295,7 @@ def test_compare_int_wgs84_lat():
     try:
         diff = int_column - wgs84_lat_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -2321,7 +2321,7 @@ def test_compare_int_wgs84_lon():
     try:
         diff = int_column - wgs84_lon_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -2346,7 +2346,7 @@ def test_compare_int_datetime():
     try:
         int_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2364,7 +2364,7 @@ def test_compare_int_unknown():
     try:
         int_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2387,7 +2387,7 @@ def test_compare_float_id():
     try:
         float_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2405,7 +2405,7 @@ def test_compare_float_untyped_id():
     try:
         float_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2428,7 +2428,7 @@ def test_compare_float_typed_id():
     try:
         float_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2451,7 +2451,7 @@ def test_compare_float_text():
     try:
         float_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2474,7 +2474,7 @@ def test_compare_float_string():
     try:
         float_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2495,7 +2495,7 @@ def test_compare_float_category():
     try:
         float_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2517,7 +2517,7 @@ def test_compare_float_bool():
     try:
         float_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2541,7 +2541,7 @@ def test_compare_float_int():
     try:
         diff = float_column - int_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -2567,7 +2567,7 @@ def test_compare_float_float():
     try:
         diff = float_column_01 - float_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2593,7 +2593,7 @@ def test_compare_float_wgs84_coordinate():
     try:
         diff = float_column - wgs84_coordinate_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2619,7 +2619,7 @@ def test_compare_float_wgs84_lat():
     try:
         diff = float_column - wgs84_lat_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2645,7 +2645,7 @@ def test_compare_float_wgs84_lon():
     try:
         diff = float_column - wgs84_lon_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2670,7 +2670,7 @@ def test_compare_float_datetime():
     try:
         float_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2688,7 +2688,7 @@ def test_compare_float_unknown():
     try:
         float_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2711,7 +2711,7 @@ def test_compare_wgs84_coordinate_id():
     try:
         wgs84_coordinate_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2729,7 +2729,7 @@ def test_compare_wgs84_coordinate_untyped_id():
     try:
         wgs84_coordinate_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2752,7 +2752,7 @@ def test_compare_wgs84_coordinate_typed_id():
     try:
         wgs84_coordinate_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2775,7 +2775,7 @@ def test_compare_wgs84_coordinate_text():
     try:
         wgs84_coordinate_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2798,7 +2798,7 @@ def test_compare_wgs84_coordinate_string():
     try:
         wgs84_coordinate_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2819,7 +2819,7 @@ def test_compare_wgs84_coordinate_category():
     try:
         wgs84_coordinate_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2841,7 +2841,7 @@ def test_compare_wgs84_coordinate_bool():
     try:
         wgs84_coordinate_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -2865,7 +2865,7 @@ def test_compare_wgs84_coordinate_int():
     try:
         diff = wgs84_coordinate_column - int_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -2891,7 +2891,7 @@ def test_compare_wgs84_coordinate_float():
     try:
         diff = wgs84_coordinate_column - float_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2917,7 +2917,7 @@ def test_compare_wgs84_coordinate_wgs84_coordinate():
     try:
         diff = wgs84_coordinate_column_01 - wgs84_coordinate_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2943,7 +2943,7 @@ def test_compare_wgs84_coordinate_wgs84_lat():
     try:
         diff = wgs84_coordinate_column - wgs84_lat_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2969,7 +2969,7 @@ def test_compare_wgs84_coordinate_wgs84_lon():
     try:
         diff = wgs84_coordinate_column - wgs84_lon_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -2994,7 +2994,7 @@ def test_compare_wgs84_coordinate_datetime():
     try:
         wgs84_coordinate_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3012,7 +3012,7 @@ def test_compare_wgs84_coordinate_unknown():
     try:
         wgs84_coordinate_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3035,7 +3035,7 @@ def test_compare_wgs84_lat_id():
     try:
         wgs84_lat_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3053,7 +3053,7 @@ def test_compare_wgs84_lat_untyped_id():
     try:
         wgs84_lat_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3076,7 +3076,7 @@ def test_compare_wgs84_lat_typed_id():
     try:
         wgs84_lat_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3099,7 +3099,7 @@ def test_compare_wgs84_lat_text():
     try:
         wgs84_lat_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3122,7 +3122,7 @@ def test_compare_wgs84_lat_string():
     try:
         wgs84_lat_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3143,7 +3143,7 @@ def test_compare_wgs84_lat_category():
     try:
         wgs84_lat_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3165,7 +3165,7 @@ def test_compare_wgs84_lat_bool():
     try:
         wgs84_lat_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3189,7 +3189,7 @@ def test_compare_wgs84_lat_int():
     try:
         diff = wgs84_lat_column - int_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -3215,7 +3215,7 @@ def test_compare_wgs84_lat_float():
     try:
         diff = wgs84_lat_column - float_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3241,7 +3241,7 @@ def test_compare_wgs84_lat_wgs84_coordinate():
     try:
         diff = wgs84_lat_column - wgs84_coordinate_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3267,7 +3267,7 @@ def test_compare_wgs84_lat_wgs84_lat():
     try:
         diff = wgs84_lat_column_01 - wgs84_lat_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3293,7 +3293,7 @@ def test_compare_wgs84_lat_wgs84_lon():
     try:
         diff = wgs84_lat_column - wgs84_lon_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3318,7 +3318,7 @@ def test_compare_wgs84_lat_datetime():
     try:
         wgs84_lat_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3336,7 +3336,7 @@ def test_compare_wgs84_lat_unknown():
     try:
         wgs84_lat_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3359,7 +3359,7 @@ def test_compare_wgs84_lon_id():
     try:
         wgs84_lon_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3377,7 +3377,7 @@ def test_compare_wgs84_lon_untyped_id():
     try:
         wgs84_lon_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3400,7 +3400,7 @@ def test_compare_wgs84_lon_typed_id():
     try:
         wgs84_lon_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3423,7 +3423,7 @@ def test_compare_wgs84_lon_text():
     try:
         wgs84_lon_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3446,7 +3446,7 @@ def test_compare_wgs84_lon_string():
     try:
         wgs84_lon_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3467,7 +3467,7 @@ def test_compare_wgs84_lon_category():
     try:
         wgs84_lon_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3489,7 +3489,7 @@ def test_compare_wgs84_lon_bool():
     try:
         wgs84_lon_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3513,7 +3513,7 @@ def test_compare_wgs84_lon_int():
     try:
         diff = wgs84_lon_column - int_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(21.7 + 11.1 + 0.4 + 9)
@@ -3539,7 +3539,7 @@ def test_compare_wgs84_lon_float():
     try:
         diff = wgs84_lon_column - float_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3565,7 +3565,7 @@ def test_compare_wgs84_lon_wgs84_coordinate():
     try:
         diff = wgs84_lon_column - wgs84_coordinate_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3591,7 +3591,7 @@ def test_compare_wgs84_lon_wgs84_lat():
     try:
         diff = wgs84_lon_column - wgs84_lat_column
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3617,7 +3617,7 @@ def test_compare_wgs84_lon_wgs84_lon():
     try:
         diff = wgs84_lon_column_01 - wgs84_lon_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == approx(1 + 0.6 + 26.9 + 16.2)
@@ -3642,7 +3642,7 @@ def test_compare_wgs84_lon_datetime():
     try:
         wgs84_lon_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3660,7 +3660,7 @@ def test_compare_wgs84_lon_unknown():
     try:
         wgs84_lon_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3682,7 +3682,7 @@ def test_compare_datetime_id():
     try:
         datetime_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3699,7 +3699,7 @@ def test_compare_datetime_untyped_id():
     try:
         datetime_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3721,7 +3721,7 @@ def test_compare_datetime_typed_id():
     try:
         datetime_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3743,7 +3743,7 @@ def test_compare_datetime_text():
     try:
         datetime_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3765,7 +3765,7 @@ def test_compare_datetime_string():
     try:
         datetime_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3785,7 +3785,7 @@ def test_compare_datetime_category():
     try:
         datetime_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3806,7 +3806,7 @@ def test_compare_datetime_bool():
     try:
         datetime_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3829,7 +3829,7 @@ def test_compare_datetime_int():
     try:
         datetime_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3852,7 +3852,7 @@ def test_compare_datetime_float():
     try:
         datetime_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3875,7 +3875,7 @@ def test_compare_datetime_wgs84_coordinate():
     try:
         datetime_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3898,7 +3898,7 @@ def test_compare_datetime_wgs84_lat():
     try:
         datetime_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3921,7 +3921,7 @@ def test_compare_datetime_wgs84_lon():
     try:
         datetime_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3943,7 +3943,7 @@ def test_compare_datetime_datetime():
     try:
         diff = datetime_column_01 - datetime_column_02
         assert True
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert False
 
     assert diff == 86400 + (7200 + 240) + 63158400  # == 63252240
@@ -3962,7 +3962,7 @@ def test_compare_datetime_unknown():
     try:
         datetime_column - unknown_type_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3979,7 +3979,7 @@ def test_compare_unknown_id():
     try:
         unknown_type_column - id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -3990,7 +3990,7 @@ def test_compare_unknown_untyped_id():
     try:
         unknown_type_column - untyped_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4007,7 +4007,7 @@ def test_compare_unknown_typed_id():
     try:
         unknown_type_column - typed_id_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4024,7 +4024,7 @@ def test_compare_unknown_text():
     try:
         unknown_type_column - text_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4041,7 +4041,7 @@ def test_compare_unknown_string():
     try:
         unknown_type_column - str_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4056,7 +4056,7 @@ def test_compare_unknown_category():
     try:
         unknown_type_column - categories_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4072,7 +4072,7 @@ def test_compare_unknown_bool():
     try:
         unknown_type_column - bool_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4090,7 +4090,7 @@ def test_compare_unknown_int():
     try:
         unknown_type_column - int_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4108,7 +4108,7 @@ def test_compare_unknown_float():
     try:
         unknown_type_column - float_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4126,7 +4126,7 @@ def test_compare_unknown_wgs84_coordinate():
     try:
         unknown_type_column - wgs84_coordinate_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4144,7 +4144,7 @@ def test_compare_unknown_wgs84_lat():
     try:
         unknown_type_column - wgs84_lat_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4162,7 +4162,7 @@ def test_compare_unknown_wgs84_lon():
     try:
         unknown_type_column - wgs84_lon_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4179,7 +4179,7 @@ def test_compare_unknown_datetime():
     try:
         unknown_type_column - datetime_column
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
 
 
@@ -4190,5 +4190,5 @@ def test_compare_unknown_unknown():
     try:
         unknown_type_column_01 - unknown_type_column_02
         assert False
-    except UncomparableException:
+    except IncomparableLabeledColumnException:
         assert True
