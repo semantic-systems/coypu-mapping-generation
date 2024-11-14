@@ -163,7 +163,10 @@ class TypeInferencer:
             dtype_column = datatypeinferencer.get_column(datatype)
 
             if dtype_column is None:
-                dtype_column = columninferencer.transform_series(pd.Series(datatype.values), datatype_id)
+                dtype_column = columninferencer.transform_series(
+                    pd.Series(datatype.values),
+                    datatype_id
+                )
 
             return_columns.append((datatype_id, dtype_column))
 
@@ -202,12 +205,3 @@ class TypeInferencer:
             return_columns.append((type_.iri, column))
 
         return return_columns
-
-    # def get_non_id_columns(self) -> List[Tuple[str, LabeledColumn]]:
-    #
-    #     return list(
-    #         map(
-    #             lambda id__datatype: (id__datatype[0], datatypeinferencer.get_column(id__datatype[1])),
-    #             self.types_handler.datatypes.items()
-    #         )
-    #     )
