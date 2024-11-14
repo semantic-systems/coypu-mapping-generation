@@ -1,29 +1,49 @@
 #!/usr/bin/env python3
 from argparse import ArgumentParser
 import logging
-from typing import List, Type
+import os
+from typing import List, Type, Dict
 
+import diskcache
+from steiner_tree.bank import BankSolver
 
+from semanticlabeling.labeledcolumn import LabeledColumn
+from util import columncomparator
 from semanticlabeling.labelinferencer import SemanticLabelInferencer
 from util.file import InputFile
-from util import graphbuilder, graphvisualizer
+from util import graphvisualizer
 from util.knowledgesource import KnowledgeSource
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+cache = diskcache.Cache('.')
 
 
 def main(
         input_file_path: str,
         input_file_cls: Type[InputFile],
         target_ontology_paths: List[str],
-        visualize: bool
+        visualize: bool,
+        sample_portion: float,
+        automatic_labeling: bool
 ):
     logger.info(
         f'Semantic label inferencing called with input file {input_file_path} '
         f'and target ontologies {" ".join(target_ontology_paths)}')
 
-    ontologies = list([KnowledgeSource(path) for path in target_ontology_paths])
+    ontologies = []
+
+    for path in target_ontology_paths:
+        ontology_file_name = os.path.basename(path) + '_' + str(sample_portion)
+
+        ontology = cache.get(ontology_file_name)
+        if ontology is None:
+            logger.info(f'Ontology {ontology_file_name} not in cache.')
+            ontology = KnowledgeSource(path, sample_portion=sample_portion)
+            cache[ontology_file_name] = ontology
+
+        ontologies.append(ontology)
 
     # input_file holds a list of labeled columns:
     # (Pdb) pp(input_file.__dict__)
@@ -74,13 +94,64 @@ def main(
     # ]
     input_file = input_file_cls(input_file_path=input_file_path)
 
-    label_inferencer = SemanticLabelInferencer(input_file, ontologies)
-    graph = label_inferencer.get_graph()
+    label_inferencer = SemanticLabelInferencer(input_file)
+    labeled_input_columns = label_inferencer.get_labeled_columns()
+
+    labeled_ontology_columns = list(ontologies[0].columns.values())
+
+    terminal_columns = []
+    terminal_nodes = set()
+    input_to_ontology_column_mappings: Dict[LabeledColumn, LabeledColumn] = dict()
+    ontology_to_input_column_mappings: Dict[LabeledColumn, LabeledColumn] = dict()
+
+    for labeled_input_column in labeled_input_columns:
+        if automatic_labeling:
+            chosen_column = columncomparator.get_closest(labeled_input_column, labeled_ontology_columns)
+            input_to_ontology_column_mappings[labeled_input_column] = chosen_column
+            ontology_to_input_column_mappings[chosen_column] = labeled_input_column
+            terminal_columns.append(chosen_column)
+
+        else:
+            closest_5_ontology_columns = columncomparator.get_closest_n(
+                labeled_input_column,
+                labeled_ontology_columns,
+                n=5
+            )
+
+            print(f'Input column: {str(labeled_input_column)}')
+            print('Matches:')
+            for num, ont_column in enumerate(closest_5_ontology_columns, start=1):
+                print(f'{num}) {str(ont_column)}')
+
+            choice_idx = input('Choice: ')
+            try:
+                choice_idx = int(choice_idx) - 1
+            except:
+                continue
+
+            if choice_idx >= 0:
+                chosen_column = closest_5_ontology_columns[choice_idx]
+                input_to_ontology_column_mappings[labeled_input_column] = chosen_column
+                ontology_to_input_column_mappings[chosen_column] = labeled_input_column
+                terminal_columns.append(chosen_column)
+
+    ontologies_graph = ontologies[0].get_graph()  # TODO: merge all ontologies
+
+    for colum in terminal_columns:
+        terminal_nodes.add(colum.column_name)
 
     if visualize:
-        graphvisualizer.visualize(graph)
+        graphvisualizer.visualize(ontologies_graph)
 
-    raise NotImplementedError()
+    solver = BankSolver(
+        original_graph=ontologies_graph,
+        terminal_nodes=terminal_nodes,
+        weight_fn=lambda e: 1
+    )
+
+    solver.run()
+    from pprint import pprint as pp
+    pp(solver.solutions)
 
 
 if __name__ == '__main__':
@@ -95,6 +166,8 @@ if __name__ == '__main__':
 
     arg_parser.add_argument('target_ontologies', nargs='+')
     arg_parser.add_argument('--visualize', action='store_true')
+    arg_parser.add_argument('--sample_kg_portion', type=float, default=1.0)
+    arg_parser.add_argument('--automatic', action='store_true')
 
     args = arg_parser.parse_args()
 
@@ -107,5 +180,7 @@ if __name__ == '__main__':
         input_file_path=input_file_path,
         input_file_cls=input_file_cls,
         target_ontology_paths=target_ontology_paths,
-        visualize=args.visualize
+        visualize=args.visualize,
+        sample_portion=args.sample_kg_portion,
+        automatic_labeling=args.automatic
     )
